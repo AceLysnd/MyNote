@@ -1,29 +1,22 @@
 package com.ace.mynote.presentation.ui.createaccount
 
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.ace.mynote.R
 import com.ace.mynote.databinding.FragmentCreateAccountBinding
-import com.ace.mynote.di.ServiceLocator
 import com.ace.mynote.utils.viewModelFactory
 
-class CreateAccountFragment : Fragment() {
+class CreateAccountFragment() : Fragment() {
 
     private lateinit var binding: FragmentCreateAccountBinding
-    private var listener: OnAppKeyChangedListener? = null
 
     private val viewModel: CreateAccountViewModel by viewModelFactory {
-        CreateAccountViewModel(ServiceLocator.provideLocalRepository(requireContext()))
-    }
-
-    fun setListener(listener: OnAppKeyChangedListener){
-        this.listener = listener
+        CreateAccountViewModel(requireContext())
     }
 
     override fun onCreateView(
@@ -40,65 +33,53 @@ class CreateAccountFragment : Fragment() {
         setClickListeners()
 
     }
+
     private fun setClickListeners() {
-        binding.btnCreateAccount.setOnClickListener { changeAppKey() }
+        binding.btnCreateAccount.setOnClickListener { createAccount() }
         binding.tvGotoLogin.setOnClickListener {
-            it.findNavController().navigate(R.id.action_createAccountFragment_to_loginAccountFragment)
+            it.findNavController()
+                .navigate(R.id.action_createAccountFragment_to_loginAccountFragment)
         }
     }
 
-    private fun changeAppKey() {
+    private fun createAccount() {
         if (validateForm()) {
-            val newAppKey = binding.etPassword.text.toString().trim()
-            context?.let { viewModel.setAppKey(newAppKey) }
-            listener?.onAppKeyChanged()
+            val username = binding.etUsername.text.toString()
+            val password = binding.etPassword.text.toString()
 
+            viewModel.setAccount(username,password)
+            Toast.makeText(requireActivity(), "Account Created", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun validateForm(): Boolean {
-        val appKey = binding.etPassword.text.toString()
-        val confirmedAppKey = binding.etConfirmPassword.text.toString()
+        val username = binding.etUsername.text.toString()
+        val password = binding.etPassword.text.toString()
+        val confirmPassword = binding.etConfirmPassword.text.toString()
         var isFormValid = true
-
-        if (appKey.isEmpty()) {
+        if (username.isEmpty()) {
+            isFormValid = false
+            binding.tilUsername.isErrorEnabled = true
+            binding.tilUsername.error = "Username is Empty"
+        }
+        if (password.isEmpty()) {
             isFormValid = false
             binding.tilPassword.isErrorEnabled = true
-            binding.tilPassword.error = "getString(R.string.error_empty_app_key)"
-        } else {
-            binding.tilPassword.isErrorEnabled = false
+            binding.tilPassword.error = "Password is Empty"
         }
-        if (confirmedAppKey.isEmpty()) {
+        if (confirmPassword.isEmpty()) {
             isFormValid = false
             binding.tilConfirmPassword.isErrorEnabled = true
-            binding.tilConfirmPassword.error = "getString(R.string.error_empty_confirmed_app_key)"
+            binding.tilConfirmPassword.error = "Password is Empty"
         } else {
+            binding.tilUsername.isErrorEnabled = false
+            binding.tilPassword.isErrorEnabled = false
             binding.tilConfirmPassword.isErrorEnabled = false
         }
-        if (appKey != confirmedAppKey) {
+        if (password != confirmPassword) {
             isFormValid = false
-            Toast.makeText(
-                context,
-                "getString(R.string.error_app_key_not_match)",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(context, "Password doesn't match!",Toast.LENGTH_SHORT).show()
         }
         return isFormValid
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if(context is OnAppKeyChangedListener){
-            listener = context
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-}
-
-interface OnAppKeyChangedListener{
-    fun onAppKeyChanged()
 }

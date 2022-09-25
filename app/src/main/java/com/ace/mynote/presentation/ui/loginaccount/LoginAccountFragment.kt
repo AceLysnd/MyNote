@@ -1,30 +1,24 @@
 package com.ace.mynote.presentation.ui.loginaccount
 
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import com.ace.mynote.R
 import com.ace.mynote.databinding.FragmentLoginAccountBinding
-import com.ace.mynote.di.ServiceLocator
 import com.ace.mynote.utils.viewModelFactory
 
 class LoginAccountFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginAccountBinding
-    private var listener : OnAppKeyConfirmedListener? = null
-
-    fun setListener(listener: OnAppKeyConfirmedListener){
-        this.listener = listener
-    }
 
     private val viewModel: LoginAccountViewModel by viewModelFactory {
-        LoginAccountViewModel(ServiceLocator.provideLocalRepository(requireContext()))
+        LoginAccountViewModel(requireContext())
     }
 
     override fun onCreateView(
@@ -41,40 +35,44 @@ class LoginAccountFragment : Fragment() {
         setClickListeners()
     }
 
-    private fun checkPassword() {
-        if (validateForm()) {
-            val appKey = binding.etPassword.text.toString().trim()
-            val isAppKeyCorrect = viewModel.checkIsAppKeyCorrect(appKey)
-            listener?.onAppKeyConfirmed(isAppKeyCorrect)
-            if(isAppKeyCorrect){
-                findNavController().navigate(R.id.action_loginAccountFragment_to_homePageFragment)
-            }else{
-                Toast.makeText(requireContext(), "Incorrect Password", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun setClickListeners() {
-        binding.btnLogin.setOnClickListener { checkPassword() }
-        binding.tvGotoLogin.setOnClickListener {
+        binding.btnLogin.setOnClickListener { checkAccount() }
+        binding.tvGotoRegister.setOnClickListener {
             it.findNavController().navigate(R.id.action_loginAccountFragment_to_createAccountFragment)
         }
     }
 
+    private fun checkAccount(){
+        if (validateForm()) {
+            val username = binding.etUsername.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
+            val isUsernameCorrect = viewModel.checkIsUsernameCorrect(username)
+            val isPasswordCorrect = viewModel.checkIsPasswordCorrect(password)
+            if(isUsernameCorrect && isPasswordCorrect){
+                findNavController().navigate(R.id.action_loginAccountFragment_to_homePageFragment)
+            }else{
+                Toast.makeText(requireContext(), "Password or Username Incorrect", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun validateForm(): Boolean {
-        val appKey = binding.etPassword.text.toString()
+        val username = binding.etUsername.text.toString()
+        val password = binding.etPassword.text.toString()
         var isFormValid = true
-        if (appKey.isEmpty()) {
+        if (username.isEmpty()) {
+            isFormValid = false
+            binding.tilUsername.isErrorEnabled = true
+            binding.tilUsername.error = "Username is Empty"
+        }
+        if (password.isEmpty()) {
             isFormValid = false
             binding.tilPassword.isErrorEnabled = true
-            binding.tilPassword.error = "Password is Empty!"
+            binding.tilPassword.error = "Password is Empty"
         } else {
+            binding.tilUsername.isErrorEnabled = false
             binding.tilPassword.isErrorEnabled = false
         }
         return isFormValid
     }
-}
-
-interface OnAppKeyConfirmedListener{
-    fun onAppKeyConfirmed(isAppKeyCorrect : Boolean)
 }

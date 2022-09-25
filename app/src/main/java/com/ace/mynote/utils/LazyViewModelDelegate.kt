@@ -26,5 +26,5 @@ class LazyViewModelDelegate<T: ViewModel>(
     }
 }
 
-inline fun <reified T: ViewModel> ViewModelStoreOwner.viewModelFactory(noinline factory: () -> T) =
+inline infix fun <reified T: ViewModel> ViewModelStoreOwner.viewModelFactory(noinline factory: () -> T) =
     LazyViewModelDelegate(T::class.java, factory)
