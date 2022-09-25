@@ -30,9 +30,9 @@ class HomePageAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteItemViewHolder {
-        val binding =
+        val view =
             ItemNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NoteItemViewHolder(binding, listener)
+        return NoteItemViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: NoteItemViewHolder, position: Int) {
@@ -40,22 +40,20 @@ class HomePageAdapter(
     }
 
     class NoteItemViewHolder(
-        private val binding: ItemNoteBinding,
+        var binding: ItemNoteBinding,
         private val listener: NoteItemClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindView(item: NoteEntity) {
             with(item) {
-                val test = noteContent
                 binding.tvNoteTitle.text = noteTitle
                 binding.tvNoteDescription.text = noteDescription
+                binding.ivDelete.setOnClickListener{ listener.onDeleteMenuClicked(item)}
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount(): Int = items.size
 }
 
 interface NoteItemClickListener {

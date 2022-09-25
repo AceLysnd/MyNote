@@ -54,7 +54,7 @@ class HomePageFragment : Fragment() {
             }
 
             override fun onDeleteMenuClicked(item: NoteEntity) {
-                TODO("Not yet implemented")
+                viewModel.deleteNote(item)
             }
 
             override fun onEditMenuClicked(item: NoteEntity) {
@@ -66,8 +66,13 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setClickListeners()
-        initList()
         observeData()
+        initList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getData()
     }
 
     private fun setClickListeners(){
@@ -84,19 +89,24 @@ class HomePageFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.noteListResult.observe(viewLifecycleOwner) {
-            bindDataToAdapter(it)
+        viewModel.getNoteList().observe(viewLifecycleOwner) {
+            adapter.setItems(it)
         }
     }
 
-    private fun bindDataToAdapter(data: List<NoteEntity>?) {
-        if (data.isNullOrEmpty()) {
-            adapter.clearItems()
-            setErrorState(true, "There is no note")
-        } else {
-            adapter.setItems(data)
-        }
+    private fun getData(){
+        viewModel.getNoteList()
     }
+
+
+//    private fun bindDataToAdapter(data: List<NoteEntity>?) {
+//        if (data.isNullOrEmpty()) {
+//            adapter.clearItems()
+//            setErrorState(true, "There is no note")
+//        } else {
+//            adapter.setItems(data)
+//        }
+
     private fun setErrorState(isError: Boolean, errorMsg: String = "") {
         binding.tvError.text = errorMsg
         binding.tvError.isVisible = isError

@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.ace.mynote.R
 import com.ace.mynote.data.local.database.NoteDatabase
 import com.ace.mynote.data.local.database.entity.NoteEntity
 import com.ace.mynote.databinding.FragmentNoteFormBinding
@@ -44,10 +47,10 @@ class NoteFormFragment : Fragment() {
         observeData()
         setOnClickListener()
         getNoteId()
-//        noteId = requireActivity().intent.getIntExtra(ARG_NOTE_ID, UNSET_NOTE_ID)
+//        var noteId = requireActivity().intent.getIntExtra(ARG_NOTE_ID, UNSET_NOTE_ID)
     }
 
-    private fun getNoteId(): Int {
+    private fun getNoteId(): Int? {
         return requireActivity().intent.getIntExtra(ARG_NOTE_ID, UNSET_NOTE_ID)
     }
 
@@ -67,10 +70,10 @@ class NoteFormFragment : Fragment() {
 
     private fun parseFormIntoEntity(): NoteEntity {
         return NoteEntity(
-            id = 1,
             noteTitle = binding.etNoteTitle.text.toString().trim(),
             noteDescription = binding.etNoteDescription.text.toString().trim(),
             noteContent = binding.etNoteContent.text.toString().trim(),
+//            id = getNoteId()
         )
     }
 
@@ -103,6 +106,7 @@ class NoteFormFragment : Fragment() {
 
 //    private fun getInitialData() {
 //        if (isEditAction()) {
+//            val noteId = getNoteId()
 //            noteId?.let {
 //                viewModel.getNoteById(it)
 //            }
@@ -112,7 +116,8 @@ class NoteFormFragment : Fragment() {
     private fun saveData() {
         if (validateForm()) {
             viewModel.insertNewNote(parseFormIntoEntity())
-
+            Toast.makeText(requireContext(), "Save Success", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_noteFormFragment_to_homePageFragment)
         }
     }
 
@@ -129,6 +134,7 @@ class NoteFormFragment : Fragment() {
     }
 //
 //    private fun isEditAction(): Boolean {
+//        val noteId = getNoteId()
 //        return noteId != null && noteId != UNSET_NOTE_ID
 //    }
 
@@ -145,4 +151,5 @@ class NoteFormFragment : Fragment() {
                 }
             }
     }
+
 }

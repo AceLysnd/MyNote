@@ -18,15 +18,15 @@ class HomePageViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    val noteListResult = MutableLiveData<List<NoteEntity>>()
-    val deleteResult = MutableLiveData<Number>()
 
-    fun getNoteList() {
-        noteListResult.postValue(noteDao.getAllNotes())
+    fun getNoteList() : MutableLiveData<List<NoteEntity>>{
+        val noteListResult = MutableLiveData<List<NoteEntity>>()
+        noteListResult.value = noteDao.getAllNotes()
+        return noteListResult
     }
 
     fun deleteNote(item: NoteEntity) {
-        deleteResult.postValue(noteDao.deleteNote(item))
+        noteDao.deleteNote(item)
     }
 
 

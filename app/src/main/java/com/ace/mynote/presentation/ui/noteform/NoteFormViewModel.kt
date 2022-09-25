@@ -16,21 +16,18 @@ class NoteFormViewModel(private var noteDao: NoteDao) : ViewModel() {
 
     fun getNoteById(id: Int) {
         viewModelScope.launch {
-            delay(1000)
             detailDataResult.postValue(noteDao.getNoteById(id))
         }
     }
 
     fun insertNewNote(item: NoteEntity) {
         viewModelScope.launch {
-            delay(1000)
             insertResult.postValue(noteDao.insertNote(item))
         }
     }
 
     fun updateNote(item: NoteEntity) {
         viewModelScope.launch {
-            delay(1000)
             updateResult.postValue(noteDao.updateNote(item))
         }
     }

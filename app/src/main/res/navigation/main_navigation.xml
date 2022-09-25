@@ -40,5 +40,9 @@
         android:id="@+id/noteFormFragment"
         android:name="com.ace.mynote.presentation.ui.noteform.NoteFormFragment"
         android:label="fragment_note_form"
-        tools:layout="@layout/fragment_note_form" />
+        tools:layout="@layout/fragment_note_form" >
+        <action
+            android:id="@+id/action_noteFormFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
+    </fragment>
 </navigation>

@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
-            name="homePageViewModel"
-            type="com.ace.mynote.presentation.ui.homepage.HomePageViewModel"/>
+            name="NoteEntity"
+            type="com.ace.mynote.data.local.database.entity.NoteEntity" />
     </data>
-
 
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
