@@ -1,7 +1,6 @@
-package com.ace.mynote.data.local.database.dao
+package com.ace.mynote.data.local.database.note
 
 import androidx.room.*
-import com.ace.mynote.data.local.database.entity.NoteEntity
 
 @Dao
 interface NoteDao {

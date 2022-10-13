@@ -3,7 +3,7 @@ package com.ace.mynote.presentation.ui.homepage
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ace.mynote.data.local.database.dao.NoteDao
+import com.ace.mynote.data.local.database.note.NoteDao
 
 class HomePageViewModelFactory(
     private val noteDao: NoteDao,

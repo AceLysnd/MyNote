@@ -1,78 +1,139 @@
 package com.ace.mynote.presentation.ui.loginaccount
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.ace.mynote.R
+import com.ace.mynote.data.local.database.user.AccountEntity
 import com.ace.mynote.databinding.FragmentLoginAccountBinding
+import com.ace.mynote.di.ServiceLocator
 import com.ace.mynote.utils.viewModelFactory
+import com.ace.mynote.wrapper.Resource
+import kotlin.properties.Delegates
 
 class LoginAccountFragment : Fragment() {
 
-    private lateinit var binding: FragmentLoginAccountBinding
+    private var _binding: FragmentLoginAccountBinding? = null
+    private val binding get() = _binding!!
+
+    var username by Delegates.notNull<Int>()
 
     private val viewModel: LoginAccountViewModel by viewModelFactory {
-        LoginAccountViewModel(requireContext())
+        LoginAccountViewModel(ServiceLocator.provideServiceLocator(requireContext()))
     }
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentLoginAccountBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentLoginAccountBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setClickListeners()
-    }
+        sharedPreferences = requireContext().getSharedPreferences(LOGIN_SHARED_PREF,
+            Context.MODE_PRIVATE
+        )
 
-    private fun setClickListeners() {
-        binding.btnLogin.setOnClickListener { checkAccount() }
+        binding.btnLogin.setOnClickListener { checkLogin() }
+
+        if (isLoginInfoValid()) {
+            checkLogin()
+            goToHome()
+        }
+
         binding.tvGotoRegister.setOnClickListener {
-            it.findNavController().navigate(R.id.action_loginAccountFragment_to_createAccountFragment)
+            findNavController().navigate(R.id.action_loginAccountFragment_to_createAccountFragment)
         }
     }
 
-    private fun checkAccount(){
-        if (validateForm()) {
-            val username = binding.etUsername.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
-            val isUsernameCorrect = viewModel.checkIsUsernameCorrect(username)
-            val isPasswordCorrect = viewModel.checkIsPasswordCorrect(password)
-            if(isUsernameCorrect && isPasswordCorrect){
-                findNavController().navigate(R.id.action_loginAccountFragment_to_homePageFragment)
-            }else{
-                Toast.makeText(requireContext(), "Password or Username Incorrect", Toast.LENGTH_SHORT).show()
+    private fun goToHome() {
+        findNavController().navigate(R.id.action_loginAccountFragment_to_homePageFragment)
+    }
+
+    private fun checkLogin() {
+        if (validateInput()) {
+            val username = binding.etUsername.text.toString()
+            viewModel.getUser(username)
+
+            viewModel.getUser.observe(viewLifecycleOwner) {
+                when (it) {
+                    is Resource.Success -> checkAccount(it.payload)
+                    is Resource.Error ->
+                        Toast.makeText(
+                            requireContext(),
+                            "error getting data",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    else -> {}
+                }
             }
         }
     }
 
-    private fun validateForm(): Boolean {
+    private fun validateInput(): Boolean {
+        var isValid = true
         val username = binding.etUsername.text.toString()
         val password = binding.etPassword.text.toString()
-        var isFormValid = true
+
         if (username.isEmpty()) {
-            isFormValid = false
-            binding.tilUsername.isErrorEnabled = true
-            binding.tilUsername.error = "Username is Empty"
+            isValid = false
+            binding.etUsername.error = getString(R.string.username_is_empty)
         }
         if (password.isEmpty()) {
-            isFormValid = false
-            binding.tilPassword.isErrorEnabled = true
-            binding.tilPassword.error = "Password is Empty"
-        } else {
-            binding.tilUsername.isErrorEnabled = false
-            binding.tilPassword.isErrorEnabled = false
+            isValid = false
+            binding.etPassword.error = getString(R.string.password_is_empty)
         }
-        return isFormValid
+        return isValid
+    }
+
+    private fun checkAccount(account: AccountEntity?) {
+        account?.let {
+            val username = binding.etUsername.text.toString()
+            val password = binding.etPassword.text.toString()
+
+            val userLoggedIn = username == account.username && password == account.password
+            if (userLoggedIn) {
+                goToHome()
+            } else {
+                Toast.makeText(
+                    context,
+                    getString(R.string.username_or_password_incorrect),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            saveLoginInfo(userLoggedIn, account.username, account.accountId)
+        }
+    }
+
+    private fun saveLoginInfo(loginInfo: Boolean, username: String, accountId: Long) {
+        sharedPreferences.edit {
+            putBoolean(LOGGED_IN_KEY, loginInfo)
+            putString(USERNAME, username)
+            putLong(ACCOUNT_ID, accountId)
+        }
+    }
+
+    private fun isLoginInfoValid(): Boolean {
+        return sharedPreferences.getBoolean(LOGGED_IN_KEY, false)
+    }
+
+    companion object {
+        const val LOGIN_SHARED_PREF = "login_shared_pref"
+        const val LOGGED_IN_KEY = "logged_in"
+        const val USERNAME = "username"
+        const val ACCOUNT_ID = "account_id"
     }
 }

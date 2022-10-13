@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ace.mynote.R
 import com.ace.mynote.data.local.database.NoteDatabase
-import com.ace.mynote.data.local.database.entity.NoteEntity
+import com.ace.mynote.data.local.database.note.NoteEntity
 import com.ace.mynote.databinding.FragmentHomePageBinding
 import com.ace.mynote.presentation.ui.homepage.adapter.HomePageAdapter
 import com.ace.mynote.presentation.ui.homepage.adapter.NoteItemClickListener

@@ -2,10 +2,8 @@ package com.ace.mynote.presentation.ui.homepage.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
-import com.ace.mynote.R
-import com.ace.mynote.data.local.database.entity.NoteEntity
+import com.ace.mynote.data.local.database.note.NoteEntity
 import com.ace.mynote.databinding.ItemNoteBinding
 
 class HomePageAdapter(

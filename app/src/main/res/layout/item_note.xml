@@ -7,7 +7,7 @@
     <data>
         <variable
             name="NoteEntity"
-            type="com.ace.mynote.data.local.database.entity.NoteEntity" />
+            type="com.ace.mynote.data.local.database.note.NoteEntity" />
     </data>
 
 <androidx.cardview.widget.CardView

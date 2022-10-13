@@ -2,26 +2,24 @@ package com.ace.mynote.presentation.ui.loginaccount
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ace.mynote.data.local.database.repository.LocalRepository
+import com.ace.mynote.data.local.database.user.AccountEntity
 import com.ace.mynote.presentation.ui.createaccount.CreateAccountViewModel
+import com.ace.mynote.wrapper.Resource
+import kotlinx.coroutines.launch
 
-class LoginAccountViewModel(context: Context) : ViewModel() {
+class LoginAccountViewModel(private val repository: LocalRepository) : ViewModel() {
 
-    private val sharedPreferences : SharedPreferences = context.getSharedPreferences(
-        CreateAccountViewModel.NAME,
-        CreateAccountViewModel.MODE
-    )
-    fun checkIsUsernameCorrect(username: String): Boolean {
-        return getUsername().equals(username, ignoreCase = true)
-    }
-    fun checkIsPasswordCorrect(password: String): Boolean {
-        return getPassword().equals(password, ignoreCase = true)
-    }
+    private var _getUserResult = MutableLiveData<Resource<AccountEntity>>()
+    val getUser: LiveData<Resource<AccountEntity>> get() = _getUserResult
 
-    private fun getUsername(): String? {
-        return sharedPreferences.getString("username","")
-    }
-    private fun getPassword(): String? {
-        return sharedPreferences.getString("username","")
+    fun getUser(username: String) {
+        viewModelScope.launch {
+            _getUserResult.postValue(repository.getAccount(username))
+        }
     }
 }

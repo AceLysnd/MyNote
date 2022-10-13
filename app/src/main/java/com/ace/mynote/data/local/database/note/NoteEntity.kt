@@ -1,4 +1,4 @@
-package com.ace.mynote.data.local.database.entity
+package com.ace.mynote.data.local.database.note
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

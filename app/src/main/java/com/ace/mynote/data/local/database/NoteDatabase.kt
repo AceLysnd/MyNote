@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.ace.mynote.data.local.database.dao.NoteDao
-import com.ace.mynote.data.local.database.entity.NoteEntity
-import net.sqlcipher.database.SQLiteDatabase
-import net.sqlcipher.database.SupportFactory
+import com.ace.mynote.data.local.database.note.NoteDao
+import com.ace.mynote.data.local.database.note.NoteEntity
 
 @Database(entities = [NoteEntity::class], version = 1, exportSchema = true)
 abstract class NoteDatabase : RoomDatabase() {

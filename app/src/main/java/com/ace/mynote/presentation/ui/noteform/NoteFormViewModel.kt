@@ -3,9 +3,8 @@ package com.ace.mynote.presentation.ui.noteform
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ace.mynote.data.local.database.dao.NoteDao
-import com.ace.mynote.data.local.database.entity.NoteEntity
-import kotlinx.coroutines.delay
+import com.ace.mynote.data.local.database.note.NoteDao
+import com.ace.mynote.data.local.database.note.NoteEntity
 import kotlinx.coroutines.launch
 
 class NoteFormViewModel(private var noteDao: NoteDao) : ViewModel() {

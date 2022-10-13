@@ -1,17 +1,10 @@
 package com.ace.mynote.presentation.ui.homepage
 
-import android.app.Activity
 import android.app.Application
-import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavHost
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import com.ace.mynote.R
-import com.ace.mynote.data.local.database.dao.NoteDao
-import com.ace.mynote.data.local.database.entity.NoteEntity
+import com.ace.mynote.data.local.database.note.NoteDao
+import com.ace.mynote.data.local.database.note.NoteEntity
 
 class HomePageViewModel(
     val noteDao: NoteDao,

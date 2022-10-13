@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ace.mynote.R
 import com.ace.mynote.data.local.database.NoteDatabase
-import com.ace.mynote.data.local.database.entity.NoteEntity
+import com.ace.mynote.data.local.database.note.NoteEntity
 import com.ace.mynote.databinding.FragmentNoteFormBinding
 import com.ace.mynote.utils.viewModelFactory
 
