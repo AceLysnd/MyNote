@@ -20,6 +20,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Welcome,"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,6 +31,8 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="@{homePageViewModel._username}"
+        android:textStyle="bold"
+        android:textColor="?attr/colorAccent"
         app:layout_constraintStart_toEndOf="@+id/tvGreetings"
         app:layout_constraintTop_toTopOf="parent" />
 
