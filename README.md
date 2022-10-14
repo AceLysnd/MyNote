@@ -1,4 +1,7 @@
 # MyNote
 
 NOTE : 
-- Saat dipencet delete ngga langsung keupdate, harus pencet back/buka fragment lagi
+- Saved user login state
+- Delete Note fixed
+- Update Note Added
+- Databinding for username
