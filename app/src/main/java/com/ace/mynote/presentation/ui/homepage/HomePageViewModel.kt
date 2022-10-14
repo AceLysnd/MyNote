@@ -8,9 +8,10 @@ import com.ace.mynote.data.local.database.note.NoteEntity
 
 class HomePageViewModel(
     val noteDao: NoteDao,
-    application: Application
+    application: Application,
 ) : AndroidViewModel(application) {
 
+    lateinit var _username: String
 
     fun getNoteList() : MutableLiveData<List<NoteEntity>>{
         val noteListResult = MutableLiveData<List<NoteEntity>>()
@@ -18,16 +19,15 @@ class HomePageViewModel(
         return noteListResult
     }
 
+    fun setUsername(username: String) {
+        _username = username
+    }
+
     fun deleteNote(item: NoteEntity) {
         noteDao.deleteNote(item)
     }
 
-
-    fun onDeleteMenuClicked(item: NoteEntity) {
-        deleteNote(item)
-    }
-
-    fun onEditMenuClicked(item: NoteEntity) {
-        TODO("Not yet implemented")
+    fun editNote(item: NoteEntity){
+        noteDao.updateNote(item)
     }
 }

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.ace.mynote.R
 import com.ace.mynote.data.local.database.user.AccountEntity
@@ -17,18 +16,17 @@ import com.ace.mynote.databinding.FragmentLoginAccountBinding
 import com.ace.mynote.di.ServiceLocator
 import com.ace.mynote.utils.viewModelFactory
 import com.ace.mynote.wrapper.Resource
-import kotlin.properties.Delegates
 
 class LoginAccountFragment : Fragment() {
 
     private var _binding: FragmentLoginAccountBinding? = null
     private val binding get() = _binding!!
 
-    var username by Delegates.notNull<Int>()
 
     private val viewModel: LoginAccountViewModel by viewModelFactory {
         LoginAccountViewModel(ServiceLocator.provideServiceLocator(requireContext()))
     }
+
 
     private lateinit var sharedPreferences: SharedPreferences
 

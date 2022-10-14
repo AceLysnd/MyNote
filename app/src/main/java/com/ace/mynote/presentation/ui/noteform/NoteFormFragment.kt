@@ -1,7 +1,5 @@
 package com.ace.mynote.presentation.ui.noteform
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,27 +8,20 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ace.mynote.R
-import com.ace.mynote.data.local.database.NoteDatabase
 import com.ace.mynote.data.local.database.note.NoteEntity
 import com.ace.mynote.databinding.FragmentNoteFormBinding
+import com.ace.mynote.di.ServiceLocator
+import com.ace.mynote.presentation.ui.homepage.HomePageFragment
 import com.ace.mynote.utils.viewModelFactory
+import com.ace.mynote.wrapper.Resource
 
 class NoteFormFragment : Fragment() {
 
     private lateinit var binding: FragmentNoteFormBinding
 
     private val viewModel: NoteFormViewModel by viewModelFactory {
-        NoteFormViewModel(NoteDatabase.getInstance(requireContext()).noteDao)
+        NoteFormViewModel(ServiceLocator.provideServiceLocator(requireContext()))
     }
-
-
-//    val noteDao = NoteDatabase.getInstance(application).noteDao
-//
-//    val viewModelFactory = HomePageViewModelFactory(noteDao, application)
-//
-//    val note =
-//        ViewModelProvider(
-//            this, viewModelFactory).get(HomePageViewModel::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,19 +30,15 @@ class NoteFormFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentNoteFormBinding.inflate(layoutInflater, container, false)
         return binding.root
-        val application = requireNotNull(this.activity).application
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeData()
-        setOnClickListener()
-        getNoteId()
-//        var noteId = requireActivity().intent.getIntExtra(ARG_NOTE_ID, UNSET_NOTE_ID)
-    }
 
-    private fun getNoteId(): Int? {
-        return requireActivity().intent.getIntExtra(ARG_NOTE_ID, UNSET_NOTE_ID)
+
+        observeData()
+        getInitialData()
+        setOnClickListener()
     }
 
     private fun setOnClickListener() {
@@ -73,8 +60,9 @@ class NoteFormFragment : Fragment() {
             noteTitle = binding.etNoteTitle.text.toString().trim(),
             noteDescription = binding.etNoteDescription.text.toString().trim(),
             noteContent = binding.etNoteContent.text.toString().trim(),
-//            id = getNoteId()
-        )
+        ). apply {
+            id = getNoteId()!!
+        }
     }
 
     private fun validateForm(): Boolean {
@@ -104,26 +92,45 @@ class NoteFormFragment : Fragment() {
         return isFormValid
     }
 
-//    private fun getInitialData() {
-//        if (isEditAction()) {
-//            val noteId = getNoteId()
-//            noteId?.let {
-//                viewModel.getNoteById(it)
-//            }
-//        }
-//    }
+    private fun getNoteId(): Int? {
+        return arguments?.getInt(HomePageFragment.EXTRA_ID)
+    }
+
+    private fun getInitialData() {
+        getNoteId()?.let {
+            viewModel.getNoteById(it)
+        }
+    }
+
+
 
     private fun saveData() {
         if (validateForm()) {
-            viewModel.insertNewNote(parseFormIntoEntity())
-            Toast.makeText(requireContext(), "Save Success", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_noteFormFragment_to_homePageFragment)
+            if (getNoteId() != 0) {
+                viewModel.updateNote(parseFormIntoEntity())
+                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_noteFormFragment_to_homePageFragment)
+            } else  {
+                viewModel.insertNewNote(parseFormIntoEntity())
+                Toast.makeText(requireContext(), "Save Success", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_noteFormFragment_to_homePageFragment)
+            }
         }
     }
 
     private fun observeData() {
         viewModel.detailDataResult.observe(viewLifecycleOwner) {
-            bindDataToForm(it)
+            when (it) {
+                is Resource.Success -> bindDataToForm(it.payload)
+                is Resource.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "error while getting data",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> {}
+            }
         }
         viewModel.updateResult.observe(viewLifecycleOwner) {
 
@@ -132,24 +139,4 @@ class NoteFormFragment : Fragment() {
 
         }
     }
-//
-//    private fun isEditAction(): Boolean {
-//        val noteId = getNoteId()
-//        return noteId != null && noteId != UNSET_NOTE_ID
-//    }
-
-
-    companion object {
-        private const val ARG_NOTE_ID = "ARG_NOTE_ID"
-        private const val UNSET_NOTE_ID = -1
-
-        @JvmStatic
-        fun newInstance(context: Context, noteId: Int? = null): Intent =
-            Intent(context, NoteFormFragment::class.java).apply {
-                noteId?.let {
-                    putExtra(ARG_NOTE_ID, it)
-                }
-            }
-    }
-
 }

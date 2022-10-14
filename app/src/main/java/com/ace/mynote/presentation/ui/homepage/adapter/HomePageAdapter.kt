@@ -22,6 +22,11 @@ class HomePageAdapter(
         notifyDataSetChanged()
     }
 
+    fun editItem(item: NoteEntity, position: Int) {
+        this.items[position] = item
+        notifyDataSetChanged()
+    }
+
     fun clearItems() {
         this.items.clear()
         notifyDataSetChanged()
@@ -47,6 +52,8 @@ class HomePageAdapter(
                 binding.tvNoteTitle.text = noteTitle
                 binding.tvNoteDescription.text = noteDescription
                 binding.ivDelete.setOnClickListener{ listener.onDeleteMenuClicked(item)}
+                binding.ivEdit.setOnClickListener{listener.onEditMenuClicked(item, id)}
+                itemView.setOnClickListener{listener.onItemClicked(item, id)}
             }
         }
     }
@@ -55,7 +62,7 @@ class HomePageAdapter(
 }
 
 interface NoteItemClickListener {
-    fun onItemClicked(item: NoteEntity)
+    fun onItemClicked(item: NoteEntity, position: Int)
     fun onDeleteMenuClicked(item: NoteEntity)
-    fun onEditMenuClicked(item: NoteEntity)
+    fun onEditMenuClicked(item: NoteEntity, position: Int)
 }

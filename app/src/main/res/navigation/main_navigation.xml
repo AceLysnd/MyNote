@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_noteFormFragment"
             app:destination="@id/noteFormFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_self"
+            app:destination="@id/homePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/noteFormFragment"
@@ -44,5 +47,9 @@
         <action
             android:id="@+id/action_noteFormFragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
+        <argument
+            android:name="noteId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>
