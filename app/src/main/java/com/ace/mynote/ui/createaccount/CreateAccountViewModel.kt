@@ -1,4 +1,4 @@
-package com.ace.mynote.presentation.ui.createaccount
+package com.ace.mynote.ui.createaccount
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

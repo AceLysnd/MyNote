@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".presentation.ui.noteform.NoteFormFragment">
+    tools:context=".ui.noteform.NoteFormFragment">
 
     <ProgressBar
         android:id="@+id/pb_form"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Note Title"
+            android:hint="Title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Enter short description"
+            android:hint="Description"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_note_title">
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Write your note here"
+            android:hint="Note"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,6 +72,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_note_content"
+                android:gravity="start"
                 android:layout_width="match_parent"
                 android:layout_height="447dp" />
 
@@ -84,7 +85,7 @@
             android:layout_height="wrap_content"
             android:text="save"
             android:textColor="@color/white"
-            app:backgroundTint="?attr/colorAccent"
+            app:backgroundTint="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_note_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>

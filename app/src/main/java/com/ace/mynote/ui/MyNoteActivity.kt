@@ -1,15 +1,11 @@
-package com.ace.mynote.presentation.ui
+package com.ace.mynote.ui
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ace.mynote.R
 import com.ace.mynote.databinding.ActivityMyNoteBinding
-import com.ace.mynote.presentation.ui.noteform.NoteFormFragment
 
 class MyNoteActivity() : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.ace.mynote.presentation.ui.loginaccount
+package com.ace.mynote.ui.loginaccount
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

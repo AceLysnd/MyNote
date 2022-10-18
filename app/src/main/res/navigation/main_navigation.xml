@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginAccountFragment"
-        android:name="com.ace.mynote.presentation.ui.loginaccount.LoginAccountFragment"
+        android:name="com.ace.mynote.ui.loginaccount.LoginAccountFragment"
         android:label="LoginAccountFragment" >
         <action
             android:id="@+id/action_loginAccountFragment_to_createAccountFragment"
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/createAccountFragment"
-        android:name="com.ace.mynote.presentation.ui.createaccount.CreateAccountFragment"
+        android:name="com.ace.mynote.ui.createaccount.CreateAccountFragment"
         android:label="CreateAccountFragment" >
         <action
             android:id="@+id/action_createAccountFragment_to_loginAccountFragment"
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/homePageFragment"
-        android:name="com.ace.mynote.presentation.ui.homepage.HomePageFragment"
+        android:name="com.ace.mynote.ui.homepage.HomePageFragment"
         android:label="fragment_home_page"
         tools:layout="@layout/fragment_home_page" >
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/noteFormFragment"
-        android:name="com.ace.mynote.presentation.ui.noteform.NoteFormFragment"
+        android:name="com.ace.mynote.ui.noteform.NoteFormFragment"
         android:label="fragment_note_form"
         tools:layout="@layout/fragment_note_form" >
         <action

@@ -1,4 +1,4 @@
-package com.ace.mynote.presentation.ui.homepage
+package com.ace.mynote.ui.homepage
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

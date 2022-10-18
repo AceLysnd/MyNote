@@ -1,4 +1,4 @@
-package com.ace.mynote.presentation.ui.homepage.adapter
+package com.ace.mynote.ui.homepage.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

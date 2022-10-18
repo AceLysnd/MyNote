@@ -1,4 +1,4 @@
-package com.ace.mynote.presentation.ui.noteform
+package com.ace.mynote.ui.noteform
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

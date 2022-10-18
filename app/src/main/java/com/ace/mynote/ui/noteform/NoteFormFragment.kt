@@ -1,4 +1,4 @@
-package com.ace.mynote.presentation.ui.noteform
+package com.ace.mynote.ui.noteform
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.ace.mynote.R
 import com.ace.mynote.data.local.database.note.NoteEntity
 import com.ace.mynote.databinding.FragmentNoteFormBinding
 import com.ace.mynote.di.ServiceLocator
-import com.ace.mynote.presentation.ui.homepage.HomePageFragment
+import com.ace.mynote.ui.homepage.HomePageFragment
 import com.ace.mynote.utils.viewModelFactory
 import com.ace.mynote.wrapper.Resource
 

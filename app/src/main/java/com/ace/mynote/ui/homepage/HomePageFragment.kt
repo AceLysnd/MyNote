@@ -1,4 +1,4 @@
-package com.ace.mynote.presentation.ui.homepage
+package com.ace.mynote.ui.homepage
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,10 +14,10 @@ import com.ace.mynote.R
 import com.ace.mynote.data.local.database.NoteDatabase
 import com.ace.mynote.data.local.database.note.NoteEntity
 import com.ace.mynote.databinding.FragmentHomePageBinding
-import com.ace.mynote.presentation.ui.homepage.adapter.HomePageAdapter
-import com.ace.mynote.presentation.ui.homepage.adapter.NoteItemClickListener
-import com.ace.mynote.presentation.ui.loginaccount.LoginAccountFragment
-import com.ace.mynote.presentation.ui.loginaccount.LoginAccountFragment.Companion.USERNAME
+import com.ace.mynote.ui.homepage.adapter.HomePageAdapter
+import com.ace.mynote.ui.homepage.adapter.NoteItemClickListener
+import com.ace.mynote.ui.loginaccount.LoginAccountFragment
+import com.ace.mynote.ui.loginaccount.LoginAccountFragment.Companion.USERNAME
 import com.ace.mynote.utils.viewModelFactory
 
 class HomePageFragment : Fragment() {
@@ -42,7 +41,6 @@ class HomePageFragment : Fragment() {
         )
         return binding.root
     }
-
 
 
     private val adapter: HomePageAdapter by lazy {
@@ -89,7 +87,7 @@ class HomePageFragment : Fragment() {
     }
 
     private fun getUsername(): String {
-        return sharedPreferences.getString(USERNAME,"")!!
+        return sharedPreferences.getString(USERNAME, "")!!
     }
 
     override fun onResume() {
@@ -140,6 +138,7 @@ class HomePageFragment : Fragment() {
     companion object {
         var EXTRA_ID = "extra_id"
     }
+
 }
 
 
